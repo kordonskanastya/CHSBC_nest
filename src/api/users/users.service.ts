@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   forwardRef,
   Inject,
   Injectable,
@@ -11,7 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 import { CreateUserResponseDto } from './dto/create-user-response.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { RefreshTokenList, User } from './entities/user.entity'
-import { UpdateResult, Repository, Not } from 'typeorm'
+import { Not, Repository, UpdateResult } from 'typeorm'
 import { GetUserResponseDto } from './dto/get-user-response.dto'
 import { DeleteResponseDto } from '../common/dto/delete-response.dto'
 import { UpdateResponseDto } from '../common/dto/update-response.dto'
@@ -19,13 +18,12 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { plainToClass } from 'class-transformer'
 import * as bcrypt from 'bcrypt'
 import * as moment from 'moment'
-import { configService } from '../../config/config.service'
 import { DurationInputArg1, DurationInputArg2 } from 'moment'
+import { configService } from '../../config/config.service'
 import { USER_REPOSITORY } from '../../constants'
 import { AuthService } from '../../auth/auth.service'
 import { paginateAndPlainToClass } from '../../utils/paginate'
 import { TokenDto } from '../../auth/dto/token.dto'
-import { ROLE } from '../../auth/roles/role.enum'
 import { checkColumnExist, enumToArray, enumToObject, getDatabaseCurrentTimestamp } from '../../utils/common'
 
 export enum UserColumns {
@@ -103,13 +101,11 @@ export class UsersService {
     search: string,
     orderByColumn: UserColumns,
     orderBy: 'ASC' | 'DESC',
-    login: string,
     name: string,
     firstName: string,
     lastName: string,
     email: string,
     role: string,
-    status: boolean,
     token: TokenDto,
   ) {
     orderByColumn = orderByColumn || UserColumns.ID
@@ -129,12 +125,6 @@ export class UsersService {
           search: `%${search}%`,
         },
       )
-    }
-
-    if (login) {
-      query.andWhere(`LOWER(User.login) LIKE LOWER(:login)`, {
-        login: `%${login}%`,
-      })
     }
 
     if (firstName) {
@@ -177,7 +167,7 @@ export class UsersService {
     return await paginateAndPlainToClass(GetUserResponseDto, query, options)
   }
 
-  async findOne(id: number, token: TokenDto): Promise<GetUserResponseDto> {
+  async findOne(id: number, token?: TokenDto): Promise<GetUserResponseDto> {
     const { sub, role } = token || {}
     const user = await this.selectUsers().andWhere({ id }).getOne()
 

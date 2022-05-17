@@ -1,11 +1,11 @@
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  BeforeInsert,
 } from 'typeorm'
 import { ROLE } from '../../../auth/roles/role.enum'
 import { hashPassword } from '../users.service'
@@ -29,9 +29,6 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 200, nullable: true })
   lastName: string
 
-  @Column({ type: 'varchar', length: 200, unique: true, nullable: false })
-  login: string
-
   @Column({ type: 'varchar', length: 320, unique: true, nullable: true })
   email: string
 
@@ -40,9 +37,6 @@ export class User extends BaseEntity {
 
   @Column({ default: ROLE.STUDENT, enum: ROLE })
   role: ROLE
-
-  @Column({ type: 'boolean', default: true })
-  status: boolean
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created: Date

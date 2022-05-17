@@ -1,17 +1,17 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Request,
-  Query,
   BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common'
-import { UserColumns, USER_COLUMN_LIST, UsersService } from './users.service'
+import { USER_COLUMN_LIST, UserColumns, UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import {
@@ -65,13 +65,10 @@ export class UsersController {
     { name: 'orderByColumn', required: false, description: 'default "id", case-sensitive', enum: UserColumns },
     { name: 'orderBy', required: false, description: 'default "ASC"' },
     { name: 'search', required: false },
-    { name: 'login', required: false },
-    { name: 'name', required: false },
     { name: 'firstName', required: false },
     { name: 'lastName', required: false },
     { name: 'email', required: false },
     { name: 'role', required: false },
-    { name: 'status', required: false },
   ])
   async findAll(
     @Query('page') page = 1,
@@ -79,8 +76,6 @@ export class UsersController {
     @Query('orderByColumn') orderByColumn: UserColumns,
     @Query('orderBy') orderBy: 'ASC' | 'DESC',
     @Query('search') search: string,
-    @Query('login') login: string,
-    @Query('name') name: string,
     @Query('firstName') firstName: string,
     @Query('lastName') lastName: string,
     @Query('email') email: string,
@@ -102,8 +97,6 @@ export class UsersController {
       search,
       orderByColumn,
       orderBy,
-      login,
-      name,
       firstName,
       lastName,
       email,
