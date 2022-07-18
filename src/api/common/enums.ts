@@ -6,4 +6,5 @@ export enum Entities {
   GROUPS = 'groups',
   STUDENTS = 'students',
   COURSES = 'courses',
+  GRADES = 'grades',
 }

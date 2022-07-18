@@ -13,6 +13,7 @@ import { StudentsModule } from './api/students/students.module'
 import * as fs from 'fs'
 import { GroupsModule } from './api/groups/groups.module'
 import { CoursesModule } from './api/courses/courses.module'
+import { GradesModule } from './api/grades/grades.module'
 
 const stream = configService.getEnvName() === 'local' ? process.stdout : fs.createWriteStream('my-file.log')
 const logLevel = configService.getEnvName() === 'local' ? 'debug' : 'error'
@@ -41,6 +42,7 @@ const logLevel = configService.getEnvName() === 'local' ? 'debug' : 'error'
     GroupsModule,
     StudentsModule,
     CoursesModule,
+    GradesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
